@@ -135,9 +135,9 @@ function insertCustomList() {
             visibility = Math.random() < 0.35 ? 'private' : 'public';
 
             customListRows.push(`('${i}', '${title}', '${description}', '${visibility}')`);
-        }
 
-        customListRange++;
+            customListRange++;
+        }
     }
 
     return customListRows;
@@ -148,12 +148,12 @@ function insertCustomListMovie() {
     let customListMovieRows = [];
     let movie_id;
 
-    for (let i = 1; i < customListRange; i++) {
+    for (let i = 1; i <= customListRange; i++) {
         let numMovies = Math.floor(Math.random() * 5);
         for (let j = 0; j < numMovies; j++) {
             movie_id = chooseFromArray(validMovieIds);
 
-            // avoid adding same movie to custom_list more than once
+            // avoid adding same movie to a custom_list more than once
             if (seenMovie.has(movie_id)) continue;
 
             customListMovieRows.push(`('${i}', '${movie_id}', ${j + 1})`);
@@ -283,12 +283,12 @@ function insertTagReview() {
 
     for (let i = 1; i <= reviewRange; i++) {
         let numTags = Math.floor(Math.random() * 5);
-        
+
         for (let j = 0; j < numTags; j++) {
             tag_id = Math.floor(Math.random() * tagRange + 1);
 
             if (seenTag.has(tag_id)) continue;
-            
+
             // assign random tag_id
             tagReviewRows.push(`(${tag_id}, ${i})`);
 
@@ -307,12 +307,12 @@ function insertTagCustomList() {
 
     for (let i = 1; i <= customListRange; i++) {
         let numTags = Math.floor(Math.random() * 5);
-        
+
         for (let j = 0; j < numTags; j++) {
             tag_id = Math.floor(Math.random() * tagRange + 1);
 
             if (seenTag.has(tag_id)) continue;
-            
+
             // assign random tag_id
             tagCustomListRows.push(`(${tag_id}, ${i})`);
 
@@ -355,12 +355,12 @@ function buildDataOutput() {
     let reviewLikeOutput = 'insert into `review_like`(`user_id`, `review_id`) values ' + insertReviewLike().join(',') + ';\n';
     dataOutput.push(reviewLikeOutput);
 
-    let reviewCommentOutput = 'insert into `review_comment`(`user_id`, `review_id`) values ' + insertReviewComment().join(',') + ';\n';
+    let reviewCommentOutput = 'insert into `review_comment`(`review_id`, `user_id`, `content`) values ' + insertReviewComment().join(',') + ';\n';
     dataOutput.push(reviewCommentOutput);
 
     let tagOutput = 'insert into `tag`(`name`) values ' + insertTag().join(',') + ';\n';
     dataOutput.push(tagOutput);
-    
+
     let tagReviewOutput = 'insert into `tag_review`(`tag_id`, `review_id`) values ' + insertTagReview().join(',') + ';\n';
     dataOutput.push(tagReviewOutput);
 
